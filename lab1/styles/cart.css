@@ -1,0 +1,17 @@
+main {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem 0.5rem;
+}
+
+#kosarica {
+	cursor: auto;
+}
+
+#proizvodi-naslov {
+	display: grid;
+	grid-template-columns: 10fr 2fr;
+}
