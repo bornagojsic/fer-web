@@ -27,7 +27,6 @@ const CartManager = {
       if (cartProduct.product.name === product.name) {
         cartProduct.quantity++;
         this.set(cart);
-        console.log("added to same item in cart", cart);
         this.setCartQuantity();
         return;
       }
@@ -36,7 +35,6 @@ const CartManager = {
     const brojProizvodaUKosarici = document.getElementById('broj-proizvoda-u-kosarici');
     brojProizvodaUKosarici.innerHTML = 1;
     brojProizvodaUKosarici.classList.remove('hidden');
-    console.log("added to cart", cart);
     this.set(cart);
   },
   removeProduct: function (product) {
@@ -48,9 +46,12 @@ const CartManager = {
           cart.splice(i, 1);
         }
         this.set(cart);
+        this.setCartQuantity();
         return;
       }
     }
+    thise.set(cart);
+    this.setCartQuantity();
   },
   clear: function () {
     this.set([]);
@@ -100,7 +101,6 @@ const changeCurrentCategory = (category) => {
   currentCategoryElement.innerHTML = category.name;
   for (categoryElement of document.getElementsByClassName('kategorija')) {
     categoryElement.classList.remove('odabrana');
-    console.log(categoryElement.innerHTML, category.name, categoryElement.innerHTML.includes(category.name))
     if (categoryElement.innerHTML.includes(category.name.replace('&', '&amp;'))) {
       categoryElement.classList.add('odabrana');
     }
@@ -150,6 +150,38 @@ const redirect = (url) => {
   window.location = `${url}?${urlSearchParams.toString()}`;
 };
 
+const createQuantityDiv = (product) => {
+  const quantityDiv = document.createElement('div');
+  quantityDiv.innerHTML = `
+    <a class="remove">-</a>
+    <p>${product.quantity}</p>
+    <a class="add">+</a>
+  `;
+  quantityDiv.classList.add('quantity');
+  quantityDiv.getElementsByClassName('add')[0].onclick = () => {
+    const quantity = parseInt(quantityDiv.getElementsByTagName('p')[0].innerHTML);
+    quantityDiv.getElementsByTagName('p')[0].innerHTML = quantity + 1;
+    CartManager.addProduct(product.product);
+  };
+  quantityDiv.getElementsByClassName('remove')[0].onclick = () => {
+    const quantity = parseInt(quantityDiv.getElementsByTagName('p')[0].innerHTML);
+    if (quantity === 1) {
+      quantityDiv.previousSibling.remove();
+      quantityDiv.remove();
+    }
+    quantityDiv.getElementsByTagName('p')[0].innerHTML = quantity - 1;
+    CartManager.removeProduct(product.product);
+  };
+  return quantityDiv;
+};
+
+const createCartItem = (cartProduct) => {
+  const product = document.createElement('p');
+  product.innerHTML = cartProduct.product.name;
+  const quantityDiv = createQuantityDiv(cartProduct);
+  return [product, quantityDiv];
+};
+
 const loadCart = () => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const cartQueryParams = urlSearchParams.get('cart');
@@ -158,16 +190,12 @@ const loadCart = () => {
   }
   CartManager.setCartQuantity();
   if (window.location.pathname.endsWith('/cart.html')) {
-    proizvodiUKosarici = document.getElementById('proizvodi-u-kosarici');
-    console.log(CartManager.get());
-    console.log(proizvodiUKosarici);
+    const proizvodi = document.getElementById('proizvodi');
     for (cartProduct of CartManager.get()) {
-      const product = cartProduct.product;
-      // const productElement = createProduct(product);
-      // productElement.getElementsByClassName('cart')[0].classList.add('hidden');
-      // productElement.getElementsByClassName('product-count')[0].classList.remove('hidden');
-      // productElement.getElementsByClassName('product-count')[0].innerHTML = cartProduct.quantity;
-      // proizvodiUKosarici.appendChild(productElement);
+      const [product, quantityDiv] = createCartItem(cartProduct);
+      proizvodi.appendChild(product);
+      proizvodi.appendChild(quantityDiv);
     }
   }
+  // window.location = window.location.pathname;
 };

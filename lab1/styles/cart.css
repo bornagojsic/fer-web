@@ -7,11 +7,28 @@ main {
 	padding: 1rem 0.5rem;
 }
 
-#kosarica {
-	cursor: auto;
-}
-
-#proizvodi-naslov {
+div#proizvodi {
 	display: grid;
 	grid-template-columns: 10fr 2fr;
+}
+
+div.quantity {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+div.quantity > p {
+	font-weight: bold;
+}
+
+div.quantity > a {
+	cursor: pointer;
+	font-size: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+  top: -5%;
 }
