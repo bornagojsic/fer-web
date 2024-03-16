@@ -197,5 +197,7 @@ const loadCart = () => {
       proizvodi.appendChild(quantityDiv);
     }
   }
-  // window.location = window.location.pathname;
+  if (cartQueryParams) {
+    window.location = window.location.pathname;
+  }
 };
