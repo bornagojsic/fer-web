@@ -251,3 +251,33 @@ div.kategorija.odabrana {
 	color: var(--hover-color);
 	box-shadow: 0px 0px 5px 3px var(--hover-color);
 }
+
+@media screen and (max-width: 1024px) {
+	main {
+		margin-top: max(14.5rem, 35vw);
+	}
+	
+	#hero {
+		position: absolute;
+		top: 8rem;
+		left: 1.75rem;
+		padding-right: 2.5rem;
+	}
+
+	#hero > h1 {
+		font-size: 1.5rem;
+		left: 2rem;
+	}
+
+	nav {
+		flex-wrap: wrap;
+	}
+
+	nav > div:first-child {
+		width: 100%;
+	}
+
+	nav > h2 {
+		padding-left: 1.75rem;
+	}
+}
