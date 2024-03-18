@@ -109,6 +109,14 @@ aside#info {
 	text-align: center;
 }
 
+aside#info > a {
+	cursor: pointer;
+}
+
+aside#info > a:hover {
+	color: var(--hover-color);
+}
+
 main {
 	display: grid;
 	grid-template-columns: 2fr 10fr;
