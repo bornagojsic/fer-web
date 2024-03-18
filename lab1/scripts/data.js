@@ -123,7 +123,7 @@ const data = {
         },
         {
           "name": "Soundbar System with Dolby Atmos",
-          "image": "soundbar_system.jpg"
+          "image": "soundbar.jpg"
         },
         {
           "name": "Smart Blu-ray Player with Wi-Fi Connectivity",
@@ -175,7 +175,7 @@ const data = {
         },
         {
           "name": "Mixed Reality Headset for Productivity and Creativity",
-          "image": "mixed_reality_headset.jpg"
+          "image": "vr_headset.jpg"
         },
         {
           "name": "VR Accessories Kit with Controller Grip Covers",
