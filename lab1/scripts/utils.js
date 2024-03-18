@@ -55,6 +55,17 @@ const CartManager = {
   },
   clear: function () {
     this.set([]);
+  },
+  loadCart: function () {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const cartQueryParams = urlSearchParams.get('cart');
+    
+    if (cartQueryParams) {
+      this.set(JSON.parse(window.atob(cartQueryParams)));
+      window.location = window.location.pathname;
+    }
+
+    this.setCartQuantity();
   }
 };
 
@@ -103,8 +114,17 @@ const changeCurrentCategory = (category) => {
     categoryElement.classList.remove('odabrana');
     if (categoryElement.innerHTML.includes(category.name.replace('&', '&amp;'))) {
       categoryElement.classList.add('odabrana');
+      localStorage.setItem('currentCategory', category.name);
     }
   }
+};
+
+const getCurrentCategory = () => {
+  const currentCategory = localStorage.getItem('currentCategory');
+  if (currentCategory !== 'undefined' && currentCategory !== undefined && currentCategory !== null && currentCategory !== 'null') {
+    return data.categories.find(category => category.name === currentCategory);
+  }
+  return data.categories[0];
 };
 
 const createCategory = (category) => {
@@ -129,25 +149,6 @@ const renderCategories = (currentCategory) => {
       categoriesContainer.lastChild.classList.add('odabrana');
     }
   });
-};
-
-const addProductsToCart = () => {
-  const cart = CartManager.get();
-  for (cartProduct of cart) {
-    const product = cartProduct.product;
-    const productElement = document.getElementsByClassName('proizvod').find(element => element.innerHTML.includes(product.name));
-    const productCountP = productElement.getElementsByClassName('product-count')[0];
-    productCountP.classList.remove('hidden');
-    productCountP.innerHTML = cartProduct.quantity;
-  }
-};
-
-const redirect = (url) => {
-  const cart = CartManager.get();
-  const cartQueryParams = window.btoa(JSON.stringify(cart));
-  const urlSearchParams = new URLSearchParams();
-  urlSearchParams.append('cart', cartQueryParams);
-  window.location = `${url}?${urlSearchParams.toString()}`;
 };
 
 const createQuantityDiv = (product) => {
@@ -182,22 +183,35 @@ const createCartItem = (cartProduct) => {
   return [product, quantityDiv];
 };
 
-const loadCart = () => {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const cartQueryParams = urlSearchParams.get('cart');
-  if (cartQueryParams) {
-    CartManager.set(JSON.parse(window.atob(cartQueryParams)));
+const renderCart = () => {
+  const proizvodi = document.getElementById('proizvodi');
+  for (cartProduct of CartManager.get()) {
+    const [product, quantityDiv] = createCartItem(cartProduct);
+    proizvodi.appendChild(product);
+    proizvodi.appendChild(quantityDiv);
   }
-  CartManager.setCartQuantity();
-  if (window.location.pathname.endsWith('/cart.html')) {
-    const proizvodi = document.getElementById('proizvodi');
-    for (cartProduct of CartManager.get()) {
-      const [product, quantityDiv] = createCartItem(cartProduct);
-      proizvodi.appendChild(product);
-      proizvodi.appendChild(quantityDiv);
-    }
-  }
-  if (cartQueryParams) {
-    window.location = window.location.pathname;
-  }
+};
+
+const redirect = (url) => {
+  const cart = CartManager.get();
+
+  const cartQueryParams = window.btoa(JSON.stringify(cart));
+  
+  const urlSearchParams = new URLSearchParams();
+  urlSearchParams.append('cart', cartQueryParams);
+  window.location = `${url}?${urlSearchParams.toString()}`;
+};
+
+const setupIndexPage = () => {
+  CartManager.loadCart()
+  const currentCategory = getCurrentCategory();
+
+  changeCurrentCategory(currentCategory);
+  renderProducts(currentCategory);
+  renderCategories(currentCategory);
+};
+
+const setupCartPage = () => {
+  CartManager.loadCart();
+  renderCart();
 };

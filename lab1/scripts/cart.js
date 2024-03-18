@@ -1,1 +1,1 @@
-document.addEventListener('DOMContentLoaded', loadCart());
+document.addEventListener('DOMContentLoaded', setupCartPage());
