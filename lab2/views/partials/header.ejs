@@ -1,0 +1,19 @@
+<header>
+    <nav>
+        <div id="logotip">
+            <a id="logo">
+                <img src="images/logo.png" alt="Innovatech Hub">
+            </a>
+        </div>
+        <h2 id="trenutna-kategorija"><%- currentCategory %></h2>
+        <div id="kosarica-i-pretrazivanje">
+            <a id="kosarica">🛒
+                <span id="broj-proizvoda-u-kosarici" 
+                    class="<%= brojProizvodaUKosarici == 0 ? 'hidden' : '' %>">
+                    <%- brojProizvodaUKosarici %>
+                </span>
+            </a> 
+            <a id="pretrazivanje">🔎</a>
+        </div>
+    </nav>
+</header>

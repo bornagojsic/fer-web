@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Innovatech Hub</title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="styles/index.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<%- include('partials/header.ejs') %>
+	<main>
+		<div id="asides">
+			<aside id="kategorije">
+				<div id="naslov">Categories</div>
+                <% for (let i = 0; i < categories.length; i++) { %>
+                    <div class="kategorija <%= categories[i].name == currentCategory ? 'odabrana' : '' %>"
+                        data-category-name="<%= categories[i].name %>"
+                        onClick="changeCurrentCategory(this)">
+                        <p><%- categories[i].name %></p>
+                    </div>
+                <% } %>
+			</aside>
+			<aside id="info">
+				<a>Kontakt</a>
+				<a>Newsletter</a>
+				<a>Pretplati se</a>
+			</aside>
+		</div>
+		<div id="content">
+			<div id="hero">
+				<h1>Welcome to Innovatech Hub web shop!</h1>
+				<img src="images/banner.jpg" alt="Innovatech Hub">
+			</div>
+            <div id="proizvodi">
+                <% products.forEach(product => { %>
+                    <div class="proizvod" 
+                        data-product-name="<%- product.name %>"
+                        onclick="addProduct(this)">
+                        <div class="img-container">
+                            <img src="images/<%- product.image %>" alt="Smart Thermostat with Voice Control">
+                            <p class="cart hidden">🛒</p>
+                            <p class="product-count <%= product.quantity == 0 ? 'hidden' : '' %>">
+                                <%- product.quantity %>
+                            </p>
+                        </div>
+                        <h3><%- product.name %></h3>
+                    </div>
+                <% }) %>
+            </div>
+		</div>
+	</main>
+
+    <script src="/dist/bundle.js"></script>
+	<script src="js/data.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/navigation.js"></script>
+	<script src="js/index.js"></script>
+</body>
+</html>

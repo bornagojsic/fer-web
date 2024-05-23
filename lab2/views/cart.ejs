@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Innovatech Hub</title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="styles/index.css">
+	<link rel="stylesheet" href="styles/cart.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<%- include('partials/header.ejs') %>
+	<main>
+		<div id="content">
+			<div id="vasa-kosarica">
+				<h1>Your cart</h1>
+				<div id="proizvodi-u-kosarici">
+					<div id="proizvodi">
+						<h2>Product</h2>
+						<h2>Quantity</h2>
+                        <% for (let i = 0; i < cart.length; i++) { %>
+                            <div class="proizvod-u-kosarici">
+                                <p><%- cart[i].name %></p>
+                            </div>
+                            <div class="quantity">
+                                <a class="remove" 
+                                    data-product-name="<%- cart[i].name %>"
+                                    onclick="removeFromCart(this)">-</a>
+                                <p class="product-quantity">
+                                    <%- cart[i].quantity %>
+                                </p>
+                                <a class="add" 
+                                    data-product-name="<%- cart[i].name %>"
+                                    onclick="addToCart(this)">+</a>
+                            </div>
+                        <% } %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+	<script src="js/data.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/navigation.js"></script>
+	<script src="js/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+main {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem 0.5rem;
+}
+
+div#proizvodi {
+	display: grid;
+	grid-template-columns: 10fr 2fr;
+}
+
+div.quantity {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+div.quantity > p {
+	font-weight: bold;
+}
+
+div.quantity > a {
+	cursor: pointer;
+	font-size: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+  top: -5%;
+}
+
+@media screen and (max-width: 1024px) {
+	main {
+		margin-top: inherit !important;
+	}
+}
