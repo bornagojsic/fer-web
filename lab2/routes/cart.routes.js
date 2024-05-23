@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const data = require('../data/data.json');
 
 router.get('/', (req, res) => {
     if (!req.session.cart) {
@@ -13,9 +14,6 @@ router.get('/', (req, res) => {
         console.log(error);
     }
 
-    console.log(brojProizvodaUKosarici)
-    console.log(req.session.cart.length)
-
     res.render('cart', {
         cart: req.session.cart,
         currentCategory: '',
@@ -24,9 +22,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-    console.log(req.body);
-    console.log("\n\n")
-
     if (!req.session.cart) {
         req.session.cart = [];
     }
@@ -42,8 +37,6 @@ router.post('/add', (req, res) => {
         });
     }
 
-    console.log("session.cart: ", req.session.cart);
-
     res.send({
         message: 'Product added to cart successfully!',
         cart: req.session.cart
@@ -51,9 +44,6 @@ router.post('/add', (req, res) => {
 });
 
 router.post('/remove', (req, res) => {
-    console.log(req.body);
-    console.log("\n\n")
-
     if (!req.session.cart) {
         req.session.cart = [];
     }
@@ -85,7 +75,60 @@ router.get('/getAll', (req, res) => {
     res.send(req.session.cart);
 });
 
+/* product ID is the index in data.json */
 
-// TODO: add /add/:id and /remove/:id routes
+router.get('/add/:id', (req, res) => {
+    if (!req.session.cart) {
+        req.session.cart = [];
+    }
+
+    const productId = req.params.id;
+    const products = data.categories.flatMap(category => category.products);
+    const product = products[productId];
+
+    if (req.session.cart.find(cartProduct => cartProduct.name === product.name)) {
+        req.session.cart.find(cartProduct => cartProduct.name === product.name).quantity++;
+    } else {
+        req.session.cart.push({
+            name: product.name,
+            quantity: 1
+        });
+    }
+
+    res.send({
+        message: 'Product added to cart successfully!',
+        cart: req.session.cart
+    });
+});
+
+router.get('/remove/:id', (req, res) => {
+    if (!req.session.cart) {
+        req.session.cart = [];
+    }
+
+    const productId = req.params.id;
+    const products = data.categories.flatMap(category => category.products);
+    const product = products[productId];
+
+    if (!req.session.cart.find(cartProduct => cartProduct.name === product.name)) {
+        res.send({
+            message: 'Product not found in cart!',
+            cart: req.session.cart
+        });
+        return;
+    }
+
+    req.session.cart.find(cartProduct => cartProduct.name === product.name).quantity--;
+
+    if (req.session.cart.find(cartProduct => cartProduct.name === product.name).quantity === 0) {
+        req.session.cart = req.session.cart.filter(cartProduct => cartProduct.name !== product.name);
+    }
+
+    res.send({
+        message: 'Product removed from cart successfully!',
+        cart: req.session.cart,
+        brojProizvodaUKosarici: req.session.cart.reduce((acc, cartProduct) => acc + cartProduct.quantity, 0)
+    });
+});
 
 module.exports = router;
