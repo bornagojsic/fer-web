@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
     let brojProizvodaUKosarici = 0
     try {
-        brojProizvodaUKosarici = req.session.cart.reduce((acc, cartProduct) => acc + cartProduct.quantity, 0);
+        brojProizvodaUKosarici = cart.reduce((acc, cartProduct) => acc + cartProduct.quantity, 0);
     } catch (error) {
         console.log(error);
     }
@@ -51,7 +51,7 @@ router.post('/change-category', async (req, res) => {
 
     let brojProizvodaUKosarici = 0
     try {
-        brojProizvodaUKosarici = req.session.cart.reduce((acc, cartProduct) => acc + cartProduct.quantity, 0);
+        brojProizvodaUKosarici = cart.reduce((acc, cartProduct) => acc + cartProduct.quantity, 0);
     } catch (error) {
         console.log(error);
     }
