@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/site.css">
+    <title>Movie List</title>
+</head>
+<body>
+    <div class="card">
+        <h1>
+            Movie List
+        </h1>
+        <a class="button" href="/movies/add">Add New Movie</a>
+        <% for (let i = 0; i < movieList.length; i++) { %>
+            <div class="movie-item">
+                <p><%- movieList[i].name %> directed by <%- movieList[i].director %></p>
+                <a class="button" href="/movies/delete/<%- i %>">Delete</a>
+            </div>
+        <% } %>
+        <a class="button" href="/">Home</a>
+    </div>
+</body>
+</html>
